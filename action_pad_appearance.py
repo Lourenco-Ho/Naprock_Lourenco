@@ -10,8 +10,17 @@ text_content = {
     "castle" : "C: ",
 }
 
-
 #common
+def headtitle_label_config(text):
+    config_value = {
+        "text" : text,
+        "font" : ('Arial', 48, 'bold'),
+        "fg" : "black"
+        }
+    
+    return config_value
+
+
 def content_label_config(text):
     config_value = {
         "text" : text,

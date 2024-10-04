@@ -1,4 +1,30 @@
 #board pad
+unit_size_L = 70
+unit_size_M = 44
+unit_size_s = 37
+
+def unit_size(board_width, board_height):
+    unit_size = 0
+    if (board_width >22) or (board_height >22):
+        unit_size = unit_size_s
+    elif (board_width >14) or (board_height >14):
+        unit_size = unit_size_M
+    else:
+        unit_size = unit_size_L
+
+    return unit_size
+
+
+def headtitle_label_config(text):
+    config_value = {
+        "text" : text,
+        "font" : ('Arial', 48, 'bold'),
+        "fg" : "black"
+        }
+    
+    return config_value
+
+
 empty_btn_config = {
     "text" : "",
     "bg" : "gray80"
