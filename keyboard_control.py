@@ -55,6 +55,11 @@ view_code = {
     "dir_L" : {"code_type": "dir", "server_code" : 8, "view_text": "⇐"}
 }
 
+
+def find_keyname(event_keycode):
+    return list(keycode.keys())[list(keycode.values()).index(event_keycode)]
+
+
 def handler(event, frame_class):
     #if event.keycode in keycode.values():
     if event.keycode in old_keycode.values():
@@ -70,5 +75,56 @@ def handler(event, frame_class):
     print(event.char, event.keysym, event.keycode)
 
 
+def key_press(event, frame_class):
+    if event.keycode in keycode.values():
+        keyname = find_keyname(event.keycode) #find keyname by value
+
+        if keyname in frame_class.move_key_isPressed:
+            frame_class.move_key_isPressed[keyname] = True
+        elif keyname in frame_class.build_key_isPressed:
+            frame_class.build_key_isPressed[keyname] = True
+        else:
+            print(frame_class.move_key_isPressed)
+            for key in frame_class.move_key_isPressed:
+                if frame_class.move_key_isPressed[key] == True:
+                    selected_masons = int(key.split("_")[1]) - 1
+                    frame_class.my_action[selected_masons]["type"] = view_code["type_move"]["server_code"]
+                    frame_class.my_action[selected_masons]["dir"] = view_code[keyname]["server_code"]
+                    frame_class.board_actions_views[selected_masons][1].config(text=view_code["type_move"]["view_text"])
+                    frame_class.board_actions_views[selected_masons][2].config(text=view_code[keyname]["view_text"])
+    
+
+
+
+def key_release(event, frame_class):
+    if event.keycode in keycode.values():
+        keyname = find_keyname(event.keycode) #find keyname by value
+
+        if keyname in frame_class.move_key_isPressed:
+            frame_class.move_key_isPressed[keyname] = False
+        elif keyname in frame_class.build_key_isPressed:
+            frame_class.build_key_isPressed[keyname] = False
+
+
 def set_handler(window_class, frame_class):
-    window_class.bind("<Key>", lambda event: handler(event, frame_class))
+    frame_class.move_key_isPressed = {
+        "move_1" : False,
+        "move_2" : False,
+        "move_3" : False,
+        "move_4" : False,
+        "move_5" : False,
+        "move_6" : False
+    }
+
+    frame_class.build_key_isPressed = {
+        "bulid_1" : False,
+        "bulid_2" : False,
+        "bulid_3" : False,
+        "bulid_4" : False,
+        "bulid_5" : False,
+        "bulid_6" : False
+    }
+
+    #window_class.bind("<Key>", lambda event: handler(event, frame_class))
+    window_class.bind_all("<KeyPress>", lambda event: key_press(event, frame_class))
+    window_class.bind_all("<KeyRelease>", lambda event: key_release(event, frame_class))
