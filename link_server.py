@@ -65,7 +65,6 @@ def get(frame_class):
             frame_class.my_turns = res_decode["turn"]
             frame_class.my_turns_time = frame_class.game_turns_time
             
-            
             frame_class.my_wall_bonus = sum(row_data.count(1) for row_data in res_decode["board"]["walls"]) * frame_class.wall_bonus
             frame_class.enemy_wall_bonus = sum(row_data.count(2) for row_data in res_decode["board"]["walls"]) * frame_class.wall_bonus
             

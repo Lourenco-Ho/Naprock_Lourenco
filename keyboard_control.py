@@ -22,12 +22,12 @@ keycode = {
     "move_4" : 52,
     "move_5" : 53,
     "move_6" : 54,
-    "bulid_1" : 81,
-    "bulid_2" : 87,
-    "bulid_3" : 69,
-    "bulid_4" : 82,
-    "bulid_5" : 84,
-    "bulid_6" : 89,
+    "build_1" : 81,
+    "build_2" : 87,
+    "build_3" : 69,
+    "build_4" : 82,
+    "build_5" : 84,
+    "build_6" : 89,
     "dir_none" : 101,
     "dir_UL" : 103,
     "dir_U" : 104,
@@ -42,7 +42,7 @@ keycode = {
 view_code = {
     "type_stay" : {"code_type": "type", "server_code" : 0, "view_text": "Stay"},
     "type_move" : {"code_type": "type", "server_code" : 1, "view_text": "Move"},
-    "type_bulid" : {"code_type": "type", "server_code" : 2, "view_text": "Build"},
+    "type_build" : {"code_type": "type", "server_code" : 2, "view_text": "Build"},
     "type_destroy" : {"code_type": "type", "server_code" : 3, "view_text": "Destroy"},
     "dir_none" : {"code_type": "dir", "server_code" : 0, "view_text": "X"},
     "dir_UL" : {"code_type": "dir", "server_code" : 1, "view_text": "⇖"},
@@ -83,14 +83,22 @@ def key_press(event, frame_class):
             frame_class.move_key_isPressed[keyname] = True
         elif keyname in frame_class.build_key_isPressed:
             frame_class.build_key_isPressed[keyname] = True
-        else:
+        else: # if dir key is pressed
             print(frame_class.move_key_isPressed)
             for key in frame_class.move_key_isPressed:
-                if frame_class.move_key_isPressed[key] == True:
+                if frame_class.move_key_isPressed[key]: #if move keys are being pressed
                     selected_masons = int(key.split("_")[1]) - 1
                     frame_class.my_action[selected_masons]["type"] = view_code["type_move"]["server_code"]
                     frame_class.my_action[selected_masons]["dir"] = view_code[keyname]["server_code"]
                     frame_class.board_actions_views[selected_masons][1].config(text=view_code["type_move"]["view_text"])
+                    frame_class.board_actions_views[selected_masons][2].config(text=view_code[keyname]["view_text"])
+
+            for key in frame_class.build_key_isPressed:
+                if frame_class.build_key_isPressed[key]: #if build keys are being pressed
+                    selected_masons = int(key.split("_")[1]) - 1
+                    frame_class.my_action[selected_masons]["type"] = view_code["type_build"]["server_code"]
+                    frame_class.my_action[selected_masons]["dir"] = view_code[keyname]["server_code"]
+                    frame_class.board_actions_views[selected_masons][1].config(text=view_code["type_build"]["view_text"])
                     frame_class.board_actions_views[selected_masons][2].config(text=view_code[keyname]["view_text"])
     
 
@@ -117,12 +125,12 @@ def set_handler(window_class, frame_class):
     }
 
     frame_class.build_key_isPressed = {
-        "bulid_1" : False,
-        "bulid_2" : False,
-        "bulid_3" : False,
-        "bulid_4" : False,
-        "bulid_5" : False,
-        "bulid_6" : False
+        "build_1" : False,
+        "build_2" : False,
+        "build_3" : False,
+        "build_4" : False,
+        "build_5" : False,
+        "build_6" : False
     }
 
     #window_class.bind("<Key>", lambda event: handler(event, frame_class))
