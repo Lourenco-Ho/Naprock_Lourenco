@@ -100,7 +100,7 @@ def board_unit(frame_class, target_frame, row_index, column_index, square_size):
     label_frame.rowconfigure(0,weight=1) #any positive number would do the trick
     label_frame.grid(row=row_index, column=column_index)
     square_btn = Button(label_frame, highlightbackground="black", highlightthickness=2, command= lambda: frame_class.board_btn_clicked([column_index, row_index]), bg="gray80")
-    square_btn.grid(sticky="wens")
+    #square_btn.grid(sticky="wens")
     return square_btn
 
 
@@ -143,8 +143,8 @@ def first_update(frame_class):
         for column_index, column_data in enumerate(frame_class.board_masons[row_index]):
             if column_data > 0:
                 frame_class.board_views[row_index][column_index].config(text=int(column_data), **board_pad_appearance.my_masons_btn_config) #display mason on the board
-                frame_class.my_masons[column_data -1][0] = column_index #record mason's coordinate
-                frame_class.my_masons[column_data -1][1] = row_index
+                frame_class.my_masons[column_data -1]["coor"][0] = column_index #record mason's coordinate
+                frame_class.my_masons[column_data -1]["coor"][1] = row_index
                 frame_class.board_actions_views[column_data -1][0] = Label(frame_class.Frame_R2, **action_pad_appearance.content_label_config( str(column_data)+". " ) ) #view for masons index
                 frame_class.board_actions_views[column_data -1][0].grid(row=column_data-1, column=0, sticky="w",padx = (0, 40))
                 frame_class.board_actions_views[column_data -1][1] = Label(frame_class.Frame_R2, **action_pad_appearance.content_label_config( "" ) ) #view for masons moving type

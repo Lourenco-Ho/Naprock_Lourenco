@@ -45,12 +45,12 @@ def first_getting(frame_class):
     frame_class.board_structures = server_data["board"]["structures"]
     frame_class.board_masons = server_data["board"]["masons"]
     frame_class.board_num_mason = server_data["board"]["mason"]
-    frame_class.my_masons = [[0, 0] for i in range(frame_class.board_num_mason)] #[x, y]
+    frame_class.my_masons = [{"coor" : [0, 0], "path": []} for i in range(frame_class.board_num_mason)] #[x, y]
+    frame_class.update_my_masons()
     frame_class.board_walls = [[0 for column in range(frame_class.board_width)] for row in range(frame_class.board_height)]
     frame_class.board_territories = [[0 for column in range(frame_class.board_width)] for row in range(frame_class.board_height)]
     
     #my action data
-    frame_class.my_selected_unit = [None,None]
     frame_class.my_action = [{"type":0, "dir":0} for i in range(frame_class.board_num_mason)]
 
     

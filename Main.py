@@ -1,10 +1,13 @@
 #import labrary
 from tkinter import *
+import re
+import numpy as np
 
 #this app labrary
 import show_gui
 import link_server
 import keyboard_control
+import Astar
 
 
 # *** change url at link_server.py ***
@@ -58,10 +61,27 @@ class ui_frame(Frame):
         
         
     def board_btn_clicked(frame_class, coordinate):
-        frame_class.my_selected_unit[0] = coordinate[0]
-        frame_class.my_selected_unit[1] = coordinate[1]
-        #print(coordinate)
+        selected_masons = -1
+        for key_name in frame_class.move_key_isPressed:
+            if frame_class.move_key_isPressed[key_name]:
+                selected_masons = int(re.findall(r"_(\d)", key_name)[0])
+                print(selected_masons)
+                break
 
+        if selected_masons != -1:
+            start_coor = (frame_class.my_masons[selected_masons-1]["coor"][0], frame_class.my_masons[selected_masons-1]["coor"][1])
+            dest_coor = (coordinate[0], coordinate[1])
+            graph = Astar.spawn_graph(frame_class)
+            path = Astar.a_star(start_coor, dest_coor, graph)
+            print(path)
+            
+    def update_my_masons(frame_class):
+        #mark down my masons
+        for row_index, row_data in enumerate(frame_class.board_masons):
+            for column_index, column_data in enumerate(row_data):
+                if column_data > 0:
+                    frame_class.my_masons[column_data-1]["coor"] [0] = column_index
+                    frame_class.my_masons[column_data-1]["coor"] [1] = row_index
     
 
 if __name__ == "__main__":
